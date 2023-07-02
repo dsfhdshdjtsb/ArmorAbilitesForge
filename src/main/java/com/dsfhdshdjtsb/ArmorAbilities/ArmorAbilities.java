@@ -1,5 +1,6 @@
 package com.dsfhdshdjtsb.ArmorAbilities;
 
+import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,6 +26,8 @@ public class ArmorAbilities
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        EnchantmentInit.ENCHANTMENTS.register(modEventBus);
 
     }
 
