@@ -1,0 +1,17 @@
+{
+  "enchantment.aabilities.focus": "Focus",
+  "enchantment.aabilities.mind_control": "Mind Control",
+  "enchantment.aabilities.telekinesis": "Telekinesis",
+
+  "enchantment.aabilities.explode": "Explode",
+  "enchantment.aabilities.cleanse": "Cleanse",
+  "enchantment.aabilities.siphon": "Siphon",
+
+  "enchantment.aabilities.blink": "Blink",
+  "enchantment.aabilities.dash": "Dash",
+  "enchantment.aabilities.rush": "Rush",
+
+  "enchantment.aabilities.anvil_stomp": "Anvil Stomp",
+  "enchantment.aabilities.frost_stomp": "Frost Stomp",
+  "enchantment.aabilities.fire_stomp": "Fire Stomp"
+}

@@ -1,14 +1,15 @@
 package com.dsfhdshdjtsb.ArmorAbilities.Enchantments;
 
+import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
-public class AnvilStompEnchantment extends Enchantment {
-    public AnvilStompEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, EquipmentSlot.values());
+public class TelekinesisEnchantment extends Enchantment {
+    public TelekinesisEnchantment() {
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.values());
     }
     @Override
     public int getMaxLevel() {
@@ -25,6 +26,6 @@ public class AnvilStompEnchantment extends Enchantment {
     }
     @Override
     protected boolean checkCompatibility(@NotNull Enchantment other) {
-        return super.checkCompatibility(other) && !(other instanceof FrostStompEnchantment || other instanceof FireStompEnchantment);
+        return super.checkCompatibility(other) && !(other instanceof FocusEnchantment || other instanceof MindControlEnchantment);
     }
 }

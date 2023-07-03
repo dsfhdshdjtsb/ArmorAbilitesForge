@@ -6,8 +6,8 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
-public class AnvilStompEnchantment extends Enchantment {
-    public AnvilStompEnchantment() {
+public class FrostStompEnchantment extends Enchantment {
+    public FrostStompEnchantment() {
         super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, EquipmentSlot.values());
     }
     @Override
@@ -25,6 +25,6 @@ public class AnvilStompEnchantment extends Enchantment {
     }
     @Override
     protected boolean checkCompatibility(@NotNull Enchantment other) {
-        return super.checkCompatibility(other) && !(other instanceof FrostStompEnchantment || other instanceof FireStompEnchantment);
+        return super.checkCompatibility(other) && !(other instanceof AnvilStompEnchantment || other instanceof FireStompEnchantment);
     }
 }
