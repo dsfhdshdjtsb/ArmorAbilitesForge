@@ -13,5 +13,8 @@
 
   "enchantment.aabilities.anvil_stomp": "Anvil Stomp",
   "enchantment.aabilities.frost_stomp": "Frost Stomp",
-  "enchantment.aabilities.fire_stomp": "Fire Stomp"
+  "enchantment.aabilities.fire_stomp": "Fire Stomp",
+
+  "key.category.aabilities.abilities": "Abilities",
+  "key.aabilites.boot_ability": "Boot Ability"
 }

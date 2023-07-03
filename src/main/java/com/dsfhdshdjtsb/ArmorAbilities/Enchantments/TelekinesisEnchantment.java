@@ -1,10 +1,8 @@
 package com.dsfhdshdjtsb.ArmorAbilities.Enchantments;
 
-import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
 public class TelekinesisEnchantment extends Enchantment {
