@@ -11,9 +11,12 @@ import com.dsfhdshdjtsb.ArmorAbilities.util.KeyBinding;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -38,20 +41,47 @@ public class ClientEvents {
             if(KeyBinding.LEGGING_ABILITY_KEY.consumeClick()){
                 player.sendSystemMessage(Component.literal("legging"));
                 int dashLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.DASH.get(), player);
-                double distanceMult = .80 + dashLevel * .1;
+                int blinkLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BLINK.get(), player);
+                int rushLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.RUSH.get(), player);
+                if(dashLevel > 0) {
+                    double distanceMult = .80 + dashLevel * .1;
 
-                Vec3 viewVector = player.getViewVector(1);
+                    Vec3 viewVector = player.getViewVector(1);
 
-                double pitch = Math.asin(-viewVector.y);
-                double velY = -Math.sin(pitch) * distanceMult;
-                double mult = Math.cos(pitch);
+                    double pitch = Math.asin(-viewVector.y);
+                    double velY = -Math.sin(pitch) * distanceMult;
+                    double mult = Math.cos(pitch);
 
-                double yaw = Math.atan2(viewVector.x, viewVector.z);
-                double velX = (Math.sin(yaw) * mult) * distanceMult;
-                double velZ = (Math.cos(yaw) * mult) * distanceMult;
+                    double yaw = Math.atan2(viewVector.x, viewVector.z);
+                    double velX = (Math.sin(yaw) * mult) * distanceMult;
+                    double velZ = (Math.cos(yaw) * mult) * distanceMult;
 
-                player.setDeltaMovement(new Vec3(velX, velY, velZ));
+                    player.setDeltaMovement(new Vec3(velX, velY, velZ));
 
+                    ModMessages.sendToServer(new LeggingC2SPacket());
+                }
+                if(blinkLevel > 0)
+                {
+                    Vec3 viewVector = player.getViewVector(1);
+
+                    double yaw = Math.atan2(viewVector.x, viewVector.z);
+                    double rads = yaw * Math.PI / 180;
+                    double posX = Math.sin(yaw) * (2+blinkLevel) + player.getX();
+                    double posZ = Math.cos(yaw) * (2+blinkLevel) + player.getZ();
+                    double posY = player.getY();
+
+                    double velX = Math.sin(yaw) * 0.2;
+                    double velZ = Math.cos(yaw) * 0.2;
+                    double velY = 0;
+
+
+                    BlockState blockState = player.level().getBlockState(new BlockPos((int) posX, (int) posY, (int) posZ));
+                    if (!blockState.isSolid()) {
+                        player.playSound(SoundEvents.ENDERMAN_TELEPORT);
+                        player.setPos(posX, posY, posZ);
+                        player.addDeltaMovement(new Vec3(velX, velY, velZ));
+                    }
+                }
                 ModMessages.sendToServer(new LeggingC2SPacket());
             }
             if(KeyBinding.BOOT_ABILITY_KEY.consumeClick()){
