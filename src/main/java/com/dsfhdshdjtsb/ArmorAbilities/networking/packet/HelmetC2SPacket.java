@@ -10,12 +10,14 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class C2SPacket {
-    public C2SPacket(){
+public class HelmetC2SPacket {
+
+    int level;
+    public HelmetC2SPacket(){
 
     }
 
-    public C2SPacket(FriendlyByteBuf buf){
+    public HelmetC2SPacket(FriendlyByteBuf buf){
 
     }
 
@@ -30,6 +32,7 @@ public class C2SPacket {
             ServerPlayer player = context.getSender();
             ServerLevel level = player.serverLevel();
 
+            System.out.println("server level:" + level);
             EntityType.COW.spawn(level, (ItemStack) null, null, player.blockPosition(), MobSpawnType.COMMAND, true, false);
 
         });

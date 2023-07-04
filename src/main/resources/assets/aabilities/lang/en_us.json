@@ -16,5 +16,8 @@
   "enchantment.aabilities.fire_stomp": "Fire Stomp",
 
   "key.category.aabilities.abilities": "Abilities",
-  "key.aabilites.boot_ability": "Boot Ability"
+  "key.aabilities.boot_ability": "Boot Ability",
+  "key.aabilities.chestplate_ability": "Chestplate Ability",
+  "key.aabilities.legging_ability": "Legging Ability",
+  "key.aabilities.helmet_ability": "Helmet Ability"
 }

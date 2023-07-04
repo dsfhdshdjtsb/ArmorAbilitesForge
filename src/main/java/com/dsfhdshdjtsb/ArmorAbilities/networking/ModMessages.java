@@ -1,8 +1,10 @@
 package com.dsfhdshdjtsb.ArmorAbilities.networking;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
-import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.C2SPacket;
-import com.mojang.serialization.Decoder;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.BootC2SPacket;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.ChestplateC2SPacket;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.HelmetC2SPacket;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.LeggingC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -27,10 +29,25 @@ public class ModMessages {
 
         INSTANCE = net;
 
-        net.messageBuilder(C2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(C2SPacket::new)
-                .encoder(C2SPacket::toBytes)
-                .consumerMainThread(C2SPacket::handle)
+        net.messageBuilder(BootC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(BootC2SPacket::new)
+                .encoder(BootC2SPacket::toBytes)
+                .consumerMainThread(BootC2SPacket::handle)
+                .add();
+        net.messageBuilder(ChestplateC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ChestplateC2SPacket::new)
+                .encoder(ChestplateC2SPacket::toBytes)
+                .consumerMainThread(ChestplateC2SPacket::handle)
+                .add();
+        net.messageBuilder(HelmetC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(HelmetC2SPacket::new)
+                .encoder(HelmetC2SPacket::toBytes)
+                .consumerMainThread(HelmetC2SPacket::handle)
+                .add();
+        net.messageBuilder(LeggingC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LeggingC2SPacket::new)
+                .encoder(LeggingC2SPacket::toBytes)
+                .consumerMainThread(LeggingC2SPacket::handle)
                 .add();
     }
 
