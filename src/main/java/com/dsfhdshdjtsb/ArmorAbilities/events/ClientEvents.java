@@ -98,10 +98,7 @@ public class ClientEvents {
                 }
                 ModMessages.sendToServer(new BootC2SPacket());
             }
-
         }
-
-
     }
     @Mod.EventBusSubscriber(modid = ArmorAbilities.MODID, value = Dist.CLIENT, bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents{

@@ -13,22 +13,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class TimerProvider<T extends FrostStompTimer> implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class TimerProvider<T extends Timer> implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    private T instance;
-    public Capability<T> TIMER = CapabilityManager.get(new CapabilityToken<>() {});
+    Supplier<T> supplier;
+    public Capability<Timer> TIMER = CapabilityManager.get(new CapabilityToken<>() {});;
     private T timer = null;
     private final LazyOptional<T> optional = LazyOptional.of(this::createTimer);
 
-    public TimerProvider(T instance)
+    public TimerProvider(Supplier<T> supplier)
     {
-        this.instance = instance;
+        this.supplier = supplier;
     }
 
     private T createTimer() {
         if(this.timer == null)
         {
-            this.timer = instance;
+            this.timer = supplier.get();
         }
 
         return this.timer;
@@ -38,6 +38,7 @@ public class TimerProvider<T extends FrostStompTimer> implements ICapabilityProv
     public @NotNull <Y> LazyOptional<Y> getCapability(@NotNull Capability<Y> cap, @Nullable Direction side) {
         if(cap == TIMER)
         {
+            System.out.println("true");
             return optional.cast();
         }
         return LazyOptional.empty();
@@ -47,7 +48,7 @@ public class TimerProvider<T extends FrostStompTimer> implements ICapabilityProv
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
         createTimer().saveNBTData(nbt);
-        return null;
+        return nbt;
     }
 
     @Override

@@ -2,14 +2,16 @@ package com.dsfhdshdjtsb.ArmorAbilities;
 
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.AnvilStompTimer;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.FireStompTimer;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.FrostStompTimer;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -21,6 +23,9 @@ public class ArmorAbilities
 {
     public static final String MODID = "aabilities";
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static TimerProvider<FrostStompTimer> frostStompTimerProvider = new TimerProvider<>(FrostStompTimer::new);
+    public static TimerProvider<AnvilStompTimer> anvilStompTimerProvider = new TimerProvider<>(AnvilStompTimer::new);
+    public static TimerProvider<FireStompTimer> fireStompTimerProvider = new TimerProvider<>(FireStompTimer::new);
 
     public ArmorAbilities()
     {

@@ -26,7 +26,7 @@ public abstract class Timer {
 
     public void addTimer(int add)
     {
-        this.timer+= add;
+        this.timer += add;
     }
 
     public abstract void saveNBTData(CompoundTag nbt);
