@@ -43,6 +43,7 @@ public class ClientEvents {
                 int dashLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.DASH.get(), player);
                 int blinkLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BLINK.get(), player);
                 int rushLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.RUSH.get(), player);
+
                 if(dashLevel > 0) {
                     double distanceMult = .80 + dashLevel * .1;
 
@@ -60,12 +61,14 @@ public class ClientEvents {
 
                     ModMessages.sendToServer(new LeggingC2SPacket());
                 }
+                else if (rushLevel > 0){
+                    ModMessages.sendToServer(new LeggingC2SPacket());
+                }
                 if(blinkLevel > 0)
                 {
                     Vec3 viewVector = player.getViewVector(1);
 
                     double yaw = Math.atan2(viewVector.x, viewVector.z);
-                    double rads = yaw * Math.PI / 180;
                     double posX = Math.sin(yaw) * (2+blinkLevel) + player.getX();
                     double posZ = Math.cos(yaw) * (2+blinkLevel) + player.getZ();
                     double posY = player.getY();
@@ -77,7 +80,6 @@ public class ClientEvents {
 
                     BlockState blockState = player.level().getBlockState(new BlockPos((int) posX, (int) posY, (int) posZ));
                     if (!blockState.isSolid()) {
-                        player.playSound(SoundEvents.ENDERMAN_TELEPORT);
                         player.setPos(posX, posY, posZ);
                         player.addDeltaMovement(new Vec3(velX, velY, velZ));
                     }
@@ -86,6 +88,14 @@ public class ClientEvents {
             }
             if(KeyBinding.BOOT_ABILITY_KEY.consumeClick()){
                 player.sendSystemMessage(Component.literal("boot"));
+                int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
+                if(frostStompLevel > 0)
+                {
+                    if(player.onGround())
+                    {
+                        player.jumpFromGround();
+                    }
+                }
                 ModMessages.sendToServer(new BootC2SPacket());
             }
 

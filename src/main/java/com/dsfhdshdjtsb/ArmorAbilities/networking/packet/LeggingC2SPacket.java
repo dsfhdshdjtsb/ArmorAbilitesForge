@@ -8,6 +8,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,6 +50,7 @@ public class LeggingC2SPacket {
             Level level = player.level();
             int dashLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.DASH.get(), player);
             int blinkLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BLINK.get(), player);
+            int rushLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.RUSH.get(), player);
             if(dashLevel > 0) {
                 double distanceMult = .80 + dashLevel * .1;
 
@@ -60,9 +64,28 @@ public class LeggingC2SPacket {
                 double velX = (Math.sin(yaw) * mult) * distanceMult;
                 double velZ = (Math.cos(yaw) * mult) * distanceMult;
 
+                player.serverLevel().sendParticles(ParticleTypes.POOF, player.getX(), player.getY(0.5), player.getZ(), 5,0.3, 0.5, 0.3, 0 );
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PHANTOM_FLAP, SoundSource.PLAYERS, 1.0f, 1.0f);
                 player.setDeltaMovement(new Vec3(velX, velY, velZ));
             }
-            if(blinkLevel > 0){
+            else if (rushLevel > 0){
+                int speedLevel = 0;
+                int strengthLevel = 0;
+                switch (rushLevel) {
+                    case 2, 3 -> speedLevel = 1;
+                    case 4 -> speedLevel = 2;
+                    case 5 -> {
+                        speedLevel = 2;
+                        strengthLevel = 1;
+                    }
+                }
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, speedLevel));
+                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, strengthLevel));
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ILLUSIONER_PREPARE_BLINDNESS, SoundSource.PLAYERS, 1.0f, 1.0f);
+                player.serverLevel().sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY(0.5), player.getZ(), 3,0.4, 0.5, 0.4, 0 );
+
+            }
+            else if(blinkLevel > 0){
                 System.out.println("server side blink");
                 Vec3 viewVector = player.getViewVector(1);
 
@@ -81,14 +104,11 @@ public class LeggingC2SPacket {
                     System.out.println("non solid");
                     System.out.println(player.getX() + " " + player.getY() + " " +  player.getZ());
                     player.serverLevel().sendParticles(ParticleTypes.DRAGON_BREATH, player.getX(), player.getY(0.5), player.getZ(), 15,0.3, 0.5, 0.3, 0 );
-                    player.playSound(SoundEvents.ENDERMAN_TELEPORT);
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.0f);
                     player.setPos(posX, posY, posZ);
                     player.setDeltaMovement(new Vec3(velX, velY, velZ));
                 }
-
-
             }
-
         });
         return true;
     }

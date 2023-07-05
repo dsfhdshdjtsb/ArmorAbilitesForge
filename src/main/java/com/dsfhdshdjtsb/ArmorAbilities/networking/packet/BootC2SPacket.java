@@ -35,8 +35,12 @@ public class BootC2SPacket {
             ServerPlayer player = context.getSender();
             ServerLevel level = player.serverLevel();
 
-            System.out.println("server level:" + level);
+            int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
 
+            if(frostStompLevel > 0)
+            {
+
+            }
         });
         return true;
     }
