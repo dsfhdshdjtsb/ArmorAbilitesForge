@@ -2,9 +2,6 @@ package com.dsfhdshdjtsb.ArmorAbilities;
 
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.AnvilStompTimer;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.FireStompTimer;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.FrostStompTimer;
 import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,9 +20,6 @@ public class ArmorAbilities
 {
     public static final String MODID = "aabilities";
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static TimerProvider<FrostStompTimer> frostStompTimerProvider = new TimerProvider<>(FrostStompTimer::new);
-    public static TimerProvider<AnvilStompTimer> anvilStompTimerProvider = new TimerProvider<>(AnvilStompTimer::new);
-    public static TimerProvider<FireStompTimer> fireStompTimerProvider = new TimerProvider<>(FireStompTimer::new);
 
     public ArmorAbilities()
     {

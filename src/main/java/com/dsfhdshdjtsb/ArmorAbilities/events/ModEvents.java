@@ -2,9 +2,15 @@ package com.dsfhdshdjtsb.ArmorAbilities.events;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.FireStompTimer;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.FrostStompTimer;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.Timer;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,11 +31,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player) {
-            if(!event.getObject().getCapability(ArmorAbilities.frostStompTimerProvider.TIMER).isPresent()) {
-                event.addCapability(new ResourceLocation(ArmorAbilities.MODID, "properties"), ArmorAbilities.frostStompTimerProvider);
-            }
-            if(!event.getObject().getCapability(ArmorAbilities.fireStompTimerProvider.TIMER).isPresent()) {
-                event.addCapability(new ResourceLocation(ArmorAbilities.MODID, "properties"), ArmorAbilities.fireStompTimerProvider);
+            if(!event.getObject().getCapability(TimerProvider.TIMER).isPresent()) {
+                event.addCapability(new ResourceLocation(ArmorAbilities.MODID, "properties"), new TimerProvider());
             }
         }
     }
@@ -37,13 +40,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if(event.isWasDeath()) {
-            event.getOriginal().getCapability(ArmorAbilities.frostStompTimerProvider.TIMER).ifPresent(oldStore -> {
-                event.getOriginal().getCapability(ArmorAbilities.frostStompTimerProvider.TIMER).ifPresent(newStore -> {
-                    newStore.copyFrom(oldStore);
-                });
-            });
-            event.getOriginal().getCapability(ArmorAbilities.fireStompTimerProvider.TIMER).ifPresent(oldStore -> {
-                event.getOriginal().getCapability(ArmorAbilities.fireStompTimerProvider.TIMER).ifPresent(newStore -> {
+            event.getOriginal().getCapability(TimerProvider.TIMER).ifPresent(oldStore -> {
+                event.getOriginal().getCapability(TimerProvider.TIMER).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
@@ -52,20 +50,20 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(FrostStompTimer.class);
-        event.register(FireStompTimer.class);
+        event.register(Timer.class);
     }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
-            Player player = event.player;
-            event.player.getCapability(ArmorAbilities.frostStompTimerProvider.TIMER).ifPresent(timer -> {
-                timer.subTimer(1);
-                System.out.println("frost: " + timer.getTimer());
+            ServerPlayer player = (ServerPlayer) event.player;
+            event.player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
+                timer.frostStompTimer--;
+                System.out.println("frost: " + timer.frostStompTimer);
 
-                if(timer.getTimer() > 0 && player.onGround())
+                if(timer.frostStompTimer > 0 && player.onGround())
                 {
+                    timer.frostStompTimer = 0;
                     int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
 
                     List<Entity> list = player.level().getEntities(player, player.getBoundingBox().expandTowards(7, 1, 7));
@@ -75,16 +73,25 @@ public class ModEvents {
 
                     if(!list.isEmpty())
                     {
-                        timer.setTimer(0);
+                        for(Entity e : list)
+                        {
+                            if(e instanceof LivingEntity)
+                            {
+                                e.setTicksFrozen(140 + frostStompLevel * 80);
+                                int amp = 0;
+                                if(frostStompLevel >= 4)
+                                    amp++;
+                                ((LivingEntity) e).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, amp));
+                                player.serverLevel().sendParticles(ParticleTypes.SNOWFLAKE, e.getX(), e.getY(0.5) - 1, e.getZ(), 10,0.5, 0.0, 0.5, 0 );
+                                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_SMALL_FALL, SoundSource.PLAYERS, 1.0f, 1.0f);
+
+                            }
+
+
+                        }
                     }
                 }
             });
-            event.player.getCapability(ArmorAbilities.fireStompTimerProvider.TIMER).ifPresent(timer -> {
-                timer.subTimer(1);
-                System.out.println("fire: " + timer.getTimer());
-            });
-
-
         }
     }
 }

@@ -13,22 +13,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class TimerProvider<T extends Timer> implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class TimerProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    Supplier<T> supplier;
-    public Capability<Timer> TIMER = CapabilityManager.get(new CapabilityToken<>() {});;
-    private T timer = null;
-    private final LazyOptional<T> optional = LazyOptional.of(this::createTimer);
+    public static Capability<Timer> TIMER = CapabilityManager.get(new CapabilityToken<>() {});;
+    private Timer timer = null;
+    private final LazyOptional<Timer> optional = LazyOptional.of(this::createTimer);
 
-    public TimerProvider(Supplier<T> supplier)
-    {
-        this.supplier = supplier;
-    }
-
-    private T createTimer() {
+    private Timer createTimer() {
         if(this.timer == null)
         {
-            this.timer = supplier.get();
+            this.timer = new Timer();
         }
 
         return this.timer;
@@ -38,7 +32,6 @@ public class TimerProvider<T extends Timer> implements ICapabilityProvider, INBT
     public @NotNull <Y> LazyOptional<Y> getCapability(@NotNull Capability<Y> cap, @Nullable Direction side) {
         if(cap == TIMER)
         {
-            System.out.println("true");
             return optional.cast();
         }
         return LazyOptional.empty();

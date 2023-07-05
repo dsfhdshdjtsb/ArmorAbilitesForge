@@ -2,6 +2,7 @@ package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,8 +42,8 @@ public class BootC2SPacket {
                     player.jumpFromGround();
                 }
 
-                player.getCapability(ArmorAbilities.frostStompTimerProvider.TIMER).ifPresent(timer -> {
-                    timer.setTimer(100);
+                player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
+                    timer.frostStompTimer = 100;
                 });
 
             }
