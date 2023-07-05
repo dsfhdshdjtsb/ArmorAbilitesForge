@@ -113,4 +113,5 @@ public class ClientEvents {
             event.register(KeyBinding.HELMET_ABILITY_KEY);
         }
     }
+
 }
