@@ -44,11 +44,14 @@ public class BootC2SPacket {
 
                 player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
                     timer.frostStompTimer = 100;
-                    timer.helmetCooldown = 200;
                 });
-
             }
+
+            player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
+                timer.bootCooldown = 200;
+            });
         });
+
         return true;
     }
 }

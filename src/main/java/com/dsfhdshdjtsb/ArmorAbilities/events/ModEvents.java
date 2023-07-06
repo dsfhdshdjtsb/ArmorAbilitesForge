@@ -4,6 +4,7 @@ import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
 import com.dsfhdshdjtsb.ArmorAbilities.client.CooldownData;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.dsfhdshdjtsb.ArmorAbilities.timers.Timer;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerData;
 import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -59,11 +60,15 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+
         if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
             ServerPlayer player = (ServerPlayer) event.player;
             event.player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
                 timer.frostStompTimer--;
-                CooldownData.HelmetCooldown = timer.helmetCooldown--;
+                TimerData.HelmetCooldown = timer.helmetCooldown--;
+                TimerData.ChestplateCooldown = timer.chestplateCooldown--;
+                TimerData.LeggingCooldown = timer.leggingCooldown--;
+                TimerData.BootCooldown = timer.bootCooldown--;
 
                 if(timer.frostStompTimer > 0 && player.onGround())
                 {
@@ -115,5 +120,6 @@ public class ModEvents {
 
             });
         }
+
     }
 }

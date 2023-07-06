@@ -1,6 +1,7 @@
 package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import net.minecraft.client.particle.DragonBreathParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -109,6 +110,9 @@ public class LeggingC2SPacket {
                     player.setDeltaMovement(new Vec3(velX, velY, velZ));
                 }
             }
+            player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
+                timer.leggingCooldown = 200;
+            });
         });
         return true;
     }

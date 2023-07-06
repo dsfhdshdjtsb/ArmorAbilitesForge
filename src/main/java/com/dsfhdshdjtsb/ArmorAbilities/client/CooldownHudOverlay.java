@@ -1,6 +1,7 @@
 package com.dsfhdshdjtsb.ArmorAbilities.client;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerData;
 import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -26,8 +27,8 @@ public class CooldownHudOverlay {
 
         float color;
         Level level = Minecraft.getInstance().level;
-        double curCooldown = CooldownData.HelmetCooldown;
-        System.out.println(curCooldown +" " + level.getGameTime());
+
+        double curCooldown = TimerData.HelmetCooldown;
         if(curCooldown > 0 ) {
             if (curCooldown < 40) {
                 color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
@@ -42,5 +43,51 @@ public class CooldownHudOverlay {
             guiGraphics.blit(HELMET, x - 187, y - 23, 0, 0, 20, 20, 20, 20);
         }
 
+        curCooldown = TimerData.ChestplateCooldown;
+        if(curCooldown > 0 ) {
+            if (curCooldown < 40) {
+                color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
+            } else if (curCooldown < 100) {
+                color = (float) Math.abs(Math.sin(level.getGameTime() / 10.0));
+            } else {
+                color = 1.0f;
+            }
+            RenderSystem.setShaderColor(color, color, color, 1.0f);
+            RenderSystem.setShaderTexture(0, CHESTPLATE);
+
+            guiGraphics.blit(CHESTPLATE, x - 172, y - 23, 0, 0, 20, 20, 20, 20);
+        }
+
+        curCooldown = TimerData.LeggingCooldown;
+        if(curCooldown > 0 ) {
+            if (curCooldown < 40) {
+                color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
+            } else if (curCooldown < 100) {
+                color = (float) Math.abs(Math.sin(level.getGameTime() / 10.0));
+            } else {
+                color = 1.0f;
+            }
+            RenderSystem.setShaderColor(color, color, color, 1.0f);
+            RenderSystem.setShaderTexture(0, LEGGING);
+
+            guiGraphics.blit(LEGGING, x - 157, y - 23, 0, 0, 20, 20, 20, 20);
+        }
+
+        curCooldown = TimerData.BootCooldown;
+        if(curCooldown > 0 ) {
+            if (curCooldown < 40) {
+                color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
+            } else if (curCooldown < 100) {
+                color = (float) Math.abs(Math.sin(level.getGameTime() / 10.0));
+            } else {
+                color = 1.0f;
+            }
+            RenderSystem.setShaderColor(color, color, color, 1.0f);
+            RenderSystem.setShaderTexture(0, BOOT);
+
+            guiGraphics.blit(BOOT, x - 141, y - 23, 0, 0, 20, 20, 20, 20);
+        }
+
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }));
 }

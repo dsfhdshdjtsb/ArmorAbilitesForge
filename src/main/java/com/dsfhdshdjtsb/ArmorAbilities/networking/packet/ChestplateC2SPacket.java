@@ -1,5 +1,6 @@
 package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 
+import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,6 +36,9 @@ public class ChestplateC2SPacket {
             System.out.println("server level:" + level);
             EntityType.COW.spawn(level, (ItemStack) null, null, player.blockPosition(), MobSpawnType.COMMAND, true, false);
 
+            player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
+                timer.chestplateCooldown = 200;
+            });
         });
         return true;
     }
