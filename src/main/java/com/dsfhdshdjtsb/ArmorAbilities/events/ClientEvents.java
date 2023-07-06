@@ -1,6 +1,7 @@
 package com.dsfhdshdjtsb.ArmorAbilities.events;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
+import com.dsfhdshdjtsb.ArmorAbilities.client.CooldownHudOverlay;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
 import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.BootC2SPacket;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -108,6 +110,11 @@ public class ClientEvents {
             event.register(KeyBinding.CHESTPLATE_ABILITY_KEY);
             event.register(KeyBinding.LEGGING_ABILITY_KEY);
             event.register(KeyBinding.HELMET_ABILITY_KEY);
+        }
+
+        @SubscribeEvent
+        public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+            event.registerAboveAll("cooldownhud", CooldownHudOverlay.HUD_COOLDOWN);
         }
     }
 
