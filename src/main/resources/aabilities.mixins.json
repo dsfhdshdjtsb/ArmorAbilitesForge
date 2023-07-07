@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "modid.refmap.json",
   "mixins": [
+    "AabilitiesPlayerEntityMixin"
   ],
   "client": [
     "AabiliitesEntityRendererMixin"

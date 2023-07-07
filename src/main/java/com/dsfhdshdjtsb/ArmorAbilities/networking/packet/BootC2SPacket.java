@@ -2,7 +2,7 @@ package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
+import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +33,11 @@ public class BootC2SPacket {
             ServerPlayer player = context.getSender();
             ServerLevel level = player.serverLevel();
 
+            TimerAccess timerAccess = (TimerAccess) player;
+
             int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
+            int fireStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FIRE_STOMP.get(), player);
+            int anvilStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.ANVIL_STOMP.get(), player);
 
             if(frostStompLevel > 0)
             {
@@ -42,14 +46,27 @@ public class BootC2SPacket {
                     player.jumpFromGround();
                 }
 
-                player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
-                    timer.frostStompTimer = 100;
-                });
+                timerAccess.aabilities_setFrostStompTimer(100);
             }
+            else if (fireStompLevel > 0)
+            {
+                if(player.onGround())
+                {
+                    player.jumpFromGround();
+                }
 
-            player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
-                timer.bootCooldown = 200;
-            });
+                timerAccess.aabilities_setFireStompTimer(100);
+            }
+            else if (anvilStompLevel > 0)
+            {
+                if(player.onGround())
+                {
+                    player.jumpFromGround();
+                }
+
+                timerAccess.aabilities_setAnvilStompTimer(100);
+            }
+//            timerAccess.aabilities_setBootCooldown(200);
         });
 
         return true;

@@ -1,6 +1,6 @@
 package com.dsfhdshdjtsb.ArmorAbilities.mixin;
 
-import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerData;
+import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,8 @@ public abstract class AabiliitesEntityRendererMixin<T extends LivingEntity, M ex
     @Inject(at = @At("HEAD"), cancellable = true, method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
     private void render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         if (pEntity instanceof Player) {
-            int fuse = (int) TimerData.ChestplateCooldown;
+            TimerAccess timerAccess = (TimerAccess) pEntity;
+            int fuse = (int) timerAccess.aabilities_getChestCooldown();
             if (fuse > 0) {
                 pMatrixStack.pushPose();
                 pMatrixStack.translate(0.0F, 0.5F, 0.0F);

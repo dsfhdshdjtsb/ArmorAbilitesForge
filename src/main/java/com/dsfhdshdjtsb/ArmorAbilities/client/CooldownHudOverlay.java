@@ -1,8 +1,7 @@
 package com.dsfhdshdjtsb.ArmorAbilities.client;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerData;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
+import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +27,9 @@ public class CooldownHudOverlay {
         float color;
         Level level = Minecraft.getInstance().level;
 
-        double curCooldown = TimerData.HelmetCooldown;
+        TimerAccess timerAccess = (TimerAccess) Minecraft.getInstance().player;
+
+        double curCooldown = timerAccess.aabilities_getHelmetCooldown();
         if(curCooldown > 0 ) {
             if (curCooldown < 40) {
                 color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
@@ -43,7 +44,7 @@ public class CooldownHudOverlay {
             guiGraphics.blit(HELMET, x - 187, y - 23, 0, 0, 20, 20, 20, 20);
         }
 
-        curCooldown = TimerData.ChestplateCooldown;
+        curCooldown = timerAccess.aabilities_getChestCooldown();
         if(curCooldown > 0 ) {
             if (curCooldown < 40) {
                 color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
@@ -58,7 +59,7 @@ public class CooldownHudOverlay {
             guiGraphics.blit(CHESTPLATE, x - 172, y - 23, 0, 0, 20, 20, 20, 20);
         }
 
-        curCooldown = TimerData.LeggingCooldown;
+        curCooldown = timerAccess.aabilities_getLeggingCooldown();
         if(curCooldown > 0 ) {
             if (curCooldown < 40) {
                 color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));
@@ -73,7 +74,7 @@ public class CooldownHudOverlay {
             guiGraphics.blit(LEGGING, x - 157, y - 23, 0, 0, 20, 20, 20, 20);
         }
 
-        curCooldown = TimerData.BootCooldown;
+        curCooldown = timerAccess.aabilities_getBootCooldown();
         if(curCooldown > 0 ) {
             if (curCooldown < 40) {
                 color = (float) Math.abs(Math.sin(level.getGameTime() / 2.0));

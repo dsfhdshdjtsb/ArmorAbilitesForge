@@ -2,7 +2,6 @@ package com.dsfhdshdjtsb.ArmorAbilities;
 
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
-import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;

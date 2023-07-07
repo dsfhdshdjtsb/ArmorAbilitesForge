@@ -1,6 +1,6 @@
 package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 
-import com.dsfhdshdjtsb.ArmorAbilities.timers.TimerProvider;
+import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,9 +36,9 @@ public class HelmetC2SPacket {
             System.out.println("server level:" + level);
             EntityType.COW.spawn(level, (ItemStack) null, null, player.blockPosition(), MobSpawnType.COMMAND, true, false);
 
-            player.getCapability(TimerProvider.TIMER).ifPresent(timer -> {
-                timer.helmetCooldown = 200;
-            });
+            TimerAccess timerAccess = (TimerAccess) player;
+
+//            timerAccess.aabilities_setHelmetCooldown(200);
 
         });
         return true;
