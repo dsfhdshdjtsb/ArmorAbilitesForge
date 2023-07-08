@@ -39,6 +39,7 @@ public class ClientEvents {
             if(KeyBinding.HELMET_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getHelmetCooldown() <= 0){
                 player.sendSystemMessage(Component.literal("helmet"));
                 timerAccess.aabilities_setHelmetCooldown(200);
+                System.out.println(timerAccess.aabilities_getShouldAnvilRender());
                 ModMessages.sendToServer(new HelmetC2SPacket());
             }
             if(KeyBinding.CHESTPLATE_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getChestCooldown() <= 0){
@@ -103,12 +104,18 @@ public class ClientEvents {
                 player.sendSystemMessage(Component.literal("boot"));
                 int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
                 int fireStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FIRE_STOMP.get(), player);
-                if(frostStompLevel > 0 || fireStompLevel > 0)
+                int anvilStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.ANVIL_STOMP.get(), player);
+                if(frostStompLevel > 0 || fireStompLevel > 0 || anvilStompLevel > 0)
                 {
                     if(player.onGround())
                     {
                         player.jumpFromGround();
                     }
+                }
+                if(anvilStompLevel > 0)
+                {
+                    timerAccess.aabilities_setShouldAnvilRender(true);
+                    timerAccess.aabilities_setAnvilStompTimer(100);
                 }
                 timerAccess.aabilities_setBootCooldown(200);
                 ModMessages.sendToServer(new BootC2SPacket());

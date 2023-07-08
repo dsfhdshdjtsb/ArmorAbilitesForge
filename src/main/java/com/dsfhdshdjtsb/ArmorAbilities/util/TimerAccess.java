@@ -17,6 +17,7 @@ public interface TimerAccess {
 
     void aabilities_setAnvilStompTimer(long ticks);
     void aabilities_setAnvilStompAnimTimer(long ticks);
+    long aabilities_getAnvilStompAnimTimer();
     void aabilities_setShouldAnvilRender(boolean bool);
     boolean aabilities_getShouldAnvilRender();
 

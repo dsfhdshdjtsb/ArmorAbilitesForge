@@ -58,6 +58,11 @@ public class AabilitiesPlayerEntityMixin implements TimerAccess {
     }
 
     @Override
+    public long aabilities_getAnvilStompAnimTimer() {
+        return ticksAnvilStompAnim;
+    }
+
+    @Override
     public void aabilities_setShouldAnvilRender(boolean bool) {
         this.shouldRenderAnvil = bool;
     }

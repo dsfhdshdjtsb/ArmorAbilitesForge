@@ -6,6 +6,8 @@ import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -65,6 +67,9 @@ public class BootC2SPacket {
                 }
 
                 timerAccess.aabilities_setAnvilStompTimer(100);
+                timerAccess.aabilities_setShouldAnvilRender(true);
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.COPPER_PLACE, SoundSource.PLAYERS, 1.0f, 1.0f);
+                //INSERT PACKETS TO OTHER PLAYERS HERE
             }
 //            timerAccess.aabilities_setBootCooldown(200);
         });
