@@ -7,8 +7,10 @@
     "AabilitiesPlayerEntityMixin"
   ],
   "client": [
+    "AabiliitesCameraMixin",
     "AabiliitesEntityRendererMixin",
-    "AabiliitesCameraMixin"
+    "AabilitiesHandHeldItemMixin",
+    "AabilitiesPlayerRendererMixin"
   ],
   "minVersion": "0.8"
 }

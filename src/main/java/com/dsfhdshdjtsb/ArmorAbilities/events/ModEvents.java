@@ -38,13 +38,21 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         TimerAccess timerAccess = (TimerAccess) event.player;
-        if(event.side == LogicalSide.CLIENT) {
-            if (timerAccess.aabilities_getAnvilStompTimer() > 0 && event.player.onGround())
-                timerAccess.aabilities_setAnvilStompTimer(0);
-        }
+
         if(event.phase == TickEvent.Phase.END)
         {
-
+            if(event.side == LogicalSide.CLIENT ) {
+                if (timerAccess.aabilities_getAnvilStompTimer() > 0 && event.player.onGround()) {
+                    timerAccess.aabilities_setAnvilStompTimer(0);
+                    System.out.println("onground");
+                }
+                if(timerAccess.aabilities_getAnvilStompTimer() >= -5) {
+                    if (event.player.onGround()) {
+                        event.player.setDeltaMovement(event.player.getDeltaMovement().multiply(0.001, 0.001, 0.001));
+                        System.out.println(event.player.getDeltaMovement());
+                    }
+                }
+            }
 
             timerAccess.aabilities_setAnvilStompTimer(timerAccess.aabilities_getAnvilStompTimer() - 1);
             timerAccess.aabilities_setFrostStompTimer(timerAccess.aabilities_getTicksUntilFrostStomp() - 1);
@@ -192,7 +200,6 @@ public class ModEvents {
                     timerAccess.aabilities_setAnvilStompAnimTimer(Math.max(timerAccess.aabilities_getAnvilStompTimer() - 2, -5));
                 }
                 if (timerAccess.aabilities_getAnvilStompTimer() == -5) {
-                    timerAccess.aabilities_setShouldAnvilRender(false);
                     //UPDATE ANVIL RENDERING FOR OTHER PLAYERS HERE
                 }
             }

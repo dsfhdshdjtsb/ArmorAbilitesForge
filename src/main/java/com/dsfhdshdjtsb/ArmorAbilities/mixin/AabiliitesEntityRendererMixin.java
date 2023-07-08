@@ -1,17 +1,24 @@
 package com.dsfhdshdjtsb.ArmorAbilities.mixin;
 
 import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,6 +54,23 @@ public abstract class AabiliitesEntityRendererMixin<T extends LivingEntity, M ex
                 TntMinecartRenderer.renderWhiteSolidBlock(Minecraft.getInstance().getBlockRenderer(), Blocks.TNT.defaultBlockState(), pMatrixStack, pBuffer, pPackedLight, i / 5 % 2 == 0);
                 pMatrixStack.popPose();
                 ci.cancel();
+            }
+            if(timerAccess.aabilities_getAnvilStompTimer() >= -5)
+            {
+                BlockState blockstate = Blocks.ANVIL.defaultBlockState();
+                if (blockstate.getRenderShape() == RenderShape.MODEL) {
+                    Level level = pEntity.level();
+                    if (blockstate != level.getBlockState(pEntity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+                        pMatrixStack.pushPose();
+                        BlockPos blockpos = BlockPos.containing(pEntity.getX(), pEntity.getBoundingBox().maxY, pEntity.getZ());
+                        pMatrixStack.translate(-0.5D, 0.0D, -0.5D);
+                        var model = Minecraft.getInstance().getBlockRenderer().getBlockModel(blockstate);
+                        for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(pEntity.blockPosition())), net.minecraftforge.client.model.data.ModelData.EMPTY))
+                            Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateBlock(level, model, blockstate, blockpos, pMatrixStack, pBuffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(pEntity.blockPosition()), OverlayTexture.NO_OVERLAY, net.minecraftforge.client.model.data.ModelData.EMPTY, renderType);
+                        pMatrixStack.popPose();
+                        ci.cancel();
+                    }
+                }
             }
         }
     }

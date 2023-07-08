@@ -114,7 +114,6 @@ public class ClientEvents {
                 }
                 if(anvilStompLevel > 0)
                 {
-                    timerAccess.aabilities_setShouldAnvilRender(true);
                     timerAccess.aabilities_setAnvilStompTimer(100);
                 }
                 timerAccess.aabilities_setBootCooldown(200);
