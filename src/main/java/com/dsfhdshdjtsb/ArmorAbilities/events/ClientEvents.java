@@ -48,8 +48,13 @@ public class ClientEvents {
                 int siphonLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.SIPHON.get(), player);
                 int cleanseLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.CLEANSE.get(), player);
 
-                timerAccess.aabilities_setChestCooldown(200);
-                ModMessages.sendToServer(new ChestplateC2SPacket());
+                if(explodeLevel > 0 && timerAccess.aabilities_getAnvilStompTimer() < -5)
+                {
+                    timerAccess.aabiliites_setFuse(80);
+                    timerAccess.aabilities_setChestCooldown(200);
+                    ModMessages.sendToServer(new ChestplateC2SPacket());
+                }
+
             }
             if(KeyBinding.LEGGING_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getLeggingCooldown() <= 0){
                 player.sendSystemMessage(Component.literal("legging"));
@@ -57,7 +62,7 @@ public class ClientEvents {
                 int blinkLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BLINK.get(), player);
                 int rushLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.RUSH.get(), player);
 
-                if(dashLevel > 0) {
+                if(dashLevel > 0 && ((timerAccess.aabilities_getFuse() < 0 && timerAccess.aabilities_getAnvilStompTimer() < -5) || !player.onGround())) {
                     double distanceMult = .80 + dashLevel * .1;
 
                     Vec3 viewVector = player.getViewVector(1);
@@ -73,9 +78,11 @@ public class ClientEvents {
                     player.setDeltaMovement(new Vec3(velX, velY, velZ));
 
                     ModMessages.sendToServer(new LeggingC2SPacket());
+                    timerAccess.aabilities_setLeggingCooldown(200);
                 }
                 else if (rushLevel > 0){
                     ModMessages.sendToServer(new LeggingC2SPacket());
+                    timerAccess.aabilities_setLeggingCooldown(200);
                 }
                 if(blinkLevel > 0)
                 {
@@ -96,28 +103,36 @@ public class ClientEvents {
                         player.setPos(posX, posY, posZ);
                         player.addDeltaMovement(new Vec3(velX, velY, velZ));
                     }
+                    timerAccess.aabilities_setLeggingCooldown(200);
+                    ModMessages.sendToServer(new LeggingC2SPacket());
                 }
-                timerAccess.aabilities_setLeggingCooldown(200);
-                ModMessages.sendToServer(new LeggingC2SPacket());
+
             }
             if(KeyBinding.BOOT_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getBootCooldown() <= 0){
                 player.sendSystemMessage(Component.literal("boot"));
                 int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
                 int fireStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FIRE_STOMP.get(), player);
                 int anvilStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.ANVIL_STOMP.get(), player);
-                if(frostStompLevel > 0 || fireStompLevel > 0 || anvilStompLevel > 0)
+                if(frostStompLevel > 0 || fireStompLevel > 0)
                 {
                     if(player.onGround())
                     {
                         player.jumpFromGround();
                     }
+                    timerAccess.aabilities_setBootCooldown(200);
+                    ModMessages.sendToServer(new BootC2SPacket());
                 }
-                if(anvilStompLevel > 0)
+                if(anvilStompLevel > 0 && timerAccess.aabilities_getFuse() < 0)
                 {
+                    if(player.onGround())
+                    {
+                        player.jumpFromGround();
+                    }
                     timerAccess.aabilities_setAnvilStompTimer(100);
+                    timerAccess.aabilities_setBootCooldown(200);
+                    ModMessages.sendToServer(new BootC2SPacket());
                 }
-                timerAccess.aabilities_setBootCooldown(200);
-                ModMessages.sendToServer(new BootC2SPacket());
+
             }
 
         }

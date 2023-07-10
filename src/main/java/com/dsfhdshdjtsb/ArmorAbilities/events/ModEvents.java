@@ -16,11 +16,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -44,14 +46,12 @@ public class ModEvents {
             if(event.side == LogicalSide.CLIENT ) {
                 if (timerAccess.aabilities_getAnvilStompTimer() > 0 && event.player.onGround()) {
                     timerAccess.aabilities_setAnvilStompTimer(0);
-                    System.out.println("onground");
                 }
-                if(timerAccess.aabilities_getAnvilStompTimer() >= -5) {
-                    if (event.player.onGround()) {
-                        event.player.setDeltaMovement(event.player.getDeltaMovement().multiply(0.001, 0.001, 0.001));
-                        System.out.println(event.player.getDeltaMovement());
-                    }
-                }
+//                if(timerAccess.aabilities_getAnvilStompTimer() >= -5 || timerAccess.aabilities_getFuse() >= 0) {
+//                    if (event.player.onGround()) {
+//                        event.player.makeStuckInBlock(event.player.getBlockStateOn(), new Vec3(0.001, 0.0000001, 0.001));
+//                    }
+//                }
             }
 
             timerAccess.aabilities_setAnvilStompTimer(timerAccess.aabilities_getAnvilStompTimer() - 1);
@@ -61,7 +61,7 @@ public class ModEvents {
             timerAccess.aabilities_setFireStompAnimTimer(timerAccess.aabilities_getTicksFireStompAnim() - 1);
             timerAccess.aabilities_setAnvilStompAnimTimer(timerAccess.aabilities_getAnvilStompAnimTimer() - 1);
 
-            timerAccess.aabiliites_setFuse(timerAccess.aabilities_getFuse() - 1);
+            timerAccess.aabiliites_setFuse(timerAccess.aabilities_getFuse() - 2);
             timerAccess.aabilities_setHelmetCooldown(timerAccess.aabilities_getHelmetCooldown() - 1);
             timerAccess.aabilities_setChestCooldown(timerAccess.aabilities_getChestCooldown() - 1);
             timerAccess.aabilities_setLeggingCooldown(timerAccess.aabilities_getLeggingCooldown() - 1);
@@ -73,7 +73,16 @@ public class ModEvents {
         if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
             ServerPlayer player = (ServerPlayer) event.player;
 
-
+            long fuse = timerAccess.aabilities_getFuse();
+            if(fuse >= 0)
+            {
+                if(fuse == 0)
+                {
+                    int explodeLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.EXPLODE.get(), player);
+                    player.serverLevel().explode(player, player.getX(), player.getY(0.0625D), player.getZ(),
+                            1.5f + 0.5f * explodeLevel, Level.ExplosionInteraction.NONE);
+                }
+            }
             if(timerAccess.aabilities_getTicksUntilFrostStomp() > 0 && player.onGround())
             {
                 timerAccess.aabilities_setFrostStompTimer(0);
@@ -141,7 +150,7 @@ public class ModEvents {
                             BlockPos pos = e.blockPosition();
                             if (level.getBlockState(pos) == Blocks.AIR.defaultBlockState()) {
                                 BlockState fire = Blocks.FIRE.defaultBlockState();
-                                level.setBlock(pos, fire, 1);
+                                level.setBlockAndUpdate(pos, fire);
                             }
                         }
                     }
@@ -174,7 +183,7 @@ public class ModEvents {
                 timerAccess.aabilities_setAnvilStompTimer(0);
                 int anvilStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.ANVIL_STOMP.get(), player);
 
-                List<Entity> list = player.level().getEntities(player, player.getBoundingBox().inflate(7,1,7) );
+                List<Entity> list = player.level().getEntities(player, player.getBoundingBox().inflate(5,1,5) );
                 list.remove(player);
 
                 if(!list.isEmpty())
@@ -182,11 +191,10 @@ public class ModEvents {
                     for(Entity e : list)
                     {
                         if(e instanceof LivingEntity) {
-                            double x = 0, z = 0;
-                            double y = 0.8 + anvilStompLevel * .1;
 
                             //INSERT PLAYER VELOCITY UPDATE HERE
-                            e.setDeltaMovement(x,y,z);
+                            ((LivingEntity) e).knockback(0.5 + 0.1 * anvilStompLevel, player.getX() - e.getX(), player.getZ() - e.getZ());
+                            e.addDeltaMovement(new Vec3(0, (0.1 + 0.1 * anvilStompLevel) * (1- ((LivingEntity) e).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0));
                         }
                     }
                 }
@@ -194,13 +202,10 @@ public class ModEvents {
                 timerAccess.aabilities_setAnvilStompAnimTimer(5);
             }
             else if(timerAccess.aabilities_getAnvilStompTimer() >= -5) {
-                if (player.onGround()) {
-                    player.setDeltaMovement(0, 0, 0);
-                } else if (player.isInWater()) {
+//                if (player.onGround()) {
+//                    player.makeStuckInBlock(player.getBlockStateOn(), new Vec3(0.001, 0.001, 0.001)); }
+                 if (player.isInWater()) {
                     timerAccess.aabilities_setAnvilStompAnimTimer(Math.max(timerAccess.aabilities_getAnvilStompTimer() - 2, -5));
-                }
-                if (timerAccess.aabilities_getAnvilStompTimer() == -5) {
-                    //UPDATE ANVIL RENDERING FOR OTHER PLAYERS HERE
                 }
             }
             if(timerAccess.aabilities_getAnvilStompAnimTimer() >= 0)

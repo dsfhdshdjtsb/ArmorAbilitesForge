@@ -25,6 +25,28 @@ public class AabilitiesPlayerEntityMixin implements TimerAccess {
     public boolean shouldRenderAnvil = false;
     private long fuse = 0;
 
+    @Inject(at = @At("HEAD"), method = "getSpeed", cancellable = true)
+    private void getSpeed(CallbackInfoReturnable<Float> cir)
+    {
+        Player player = (Player) ((Object)this);
+        TimerAccess timerAccess = (TimerAccess) player;
+        if((timerAccess.aabilities_getFuse() >= 0 || timerAccess.aabilities_getAnvilStompTimer() >= -5) && player.onGround())
+        {
+            cir.setReturnValue(0.0f);
+        }
+
+    }
+
+    @Inject(at = @At("HEAD"), method = "jumpFromGround", cancellable = true)
+    private void jump(CallbackInfo ci)
+    {
+        Player player = (Player) ((Object)this);
+        TimerAccess timerAccess = (TimerAccess) player;
+        if(timerAccess.aabilities_getFuse() >= 0)
+        {
+            ci.cancel();
+        }
+    }
     @Inject(at = @At("HEAD"), method = "hurt", cancellable = true)
     private void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Player player = (Player) ((Object)this);

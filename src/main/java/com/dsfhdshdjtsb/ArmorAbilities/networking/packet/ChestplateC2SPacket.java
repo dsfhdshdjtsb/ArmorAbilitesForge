@@ -5,6 +5,8 @@ import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
@@ -40,6 +42,13 @@ public class ChestplateC2SPacket {
             int cleanseLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.CLEANSE.get(), player);
 
             TimerAccess timerAccess = (TimerAccess) player;
+
+            if(explodeLevel > 0)
+            {
+                timerAccess.aabiliites_setFuse(80);
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TNT_PRIMED, SoundSource.PLAYERS, 1.0f, 1.0f);
+                //DO SERVER RENDERING HERE
+            }
 
 //            timerAccess.aabilities_setChestCooldown(200);
         });

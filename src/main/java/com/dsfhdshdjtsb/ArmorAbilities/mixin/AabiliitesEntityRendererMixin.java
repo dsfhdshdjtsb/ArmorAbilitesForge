@@ -34,8 +34,8 @@ public abstract class AabiliitesEntityRendererMixin<T extends LivingEntity, M ex
     private void render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         if (pEntity instanceof Player) {
             TimerAccess timerAccess = (TimerAccess) pEntity;
-            int fuse = (int) timerAccess.aabilities_getChestCooldown();
-            if (fuse > 0) {
+            int fuse = (int) timerAccess.aabilities_getFuse();
+            if (fuse >= 0) {
                 pMatrixStack.pushPose();
                 pMatrixStack.translate(0.0F, 0.5F, 0.0F);
                 int i = fuse;
