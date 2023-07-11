@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -26,6 +27,8 @@ import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 public class ClientEvents {
     @Mod.EventBusSubscriber(modid = ArmorAbilities.MODID, value = Dist.CLIENT)
@@ -37,13 +40,40 @@ public class ClientEvents {
             TimerAccess timerAccess = (TimerAccess) player;
 
             if(KeyBinding.HELMET_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getHelmetCooldown() <= 0){
-                player.sendSystemMessage(Component.literal("helmet"));
                 timerAccess.aabilities_setHelmetCooldown(200);
-                System.out.println(timerAccess.aabilities_getShouldAnvilRender());
-                ModMessages.sendToServer(new HelmetC2SPacket());
+                int mindControlLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.MIND_CONTROL.get(), player);
+                int telekinesisLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.TELEKINESIS.get(), player);
+                int focusLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FOCUS.get(), player);
+
+                if(mindControlLevel > 0)
+                {
+                    List<LivingEntity> list = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(5 + mindControlLevel,mindControlLevel + 5,5 + mindControlLevel) );
+                    list.remove(player);
+                    if(list.isEmpty())
+                        return;
+                    timerAccess.aabilities_setHelmetCooldown(200);
+                    ModMessages.sendToServer(new HelmetC2SPacket());
+                }
+                else if(telekinesisLevel > 0)
+                {
+                    List<LivingEntity> list = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(5 + telekinesisLevel,2,5 + telekinesisLevel) );
+                    list.remove(player);
+                    if(list.isEmpty())
+                        return;
+                    timerAccess.aabilities_setHelmetCooldown(200);
+                    ModMessages.sendToServer(new HelmetC2SPacket());
+                }
+                else if(focusLevel > 0)
+                {
+                    timerAccess.aabilities_setHelmetCooldown(200);
+                    timerAccess.aabilities_setChestCooldown(0);
+                    timerAccess.aabilities_setBootCooldown(0);
+                    timerAccess.aabilities_setLeggingCooldown(0);
+                    ModMessages.sendToServer(new HelmetC2SPacket());
+                }
+
             }
             if(KeyBinding.CHESTPLATE_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getChestCooldown() <= 0){
-                player.sendSystemMessage(Component.literal("chestplate"));
                 int explodeLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.EXPLODE.get(), player);
                 int siphonLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.SIPHON.get(), player);
                 int cleanseLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.CLEANSE.get(), player);
@@ -54,10 +84,22 @@ public class ClientEvents {
                     timerAccess.aabilities_setChestCooldown(200);
                     ModMessages.sendToServer(new ChestplateC2SPacket());
                 }
-
+                else if(cleanseLevel > 0)
+                {
+                    timerAccess.aabilities_setChestCooldown(200);
+                    ModMessages.sendToServer(new ChestplateC2SPacket());
+                }
+                else if(siphonLevel > 0)
+                {
+                    List<LivingEntity> list = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(3 + siphonLevel,1,3 + siphonLevel) );
+                    list.remove(player);
+                    if(list.isEmpty())
+                        return;
+                    timerAccess.aabilities_setChestCooldown(200);
+                    ModMessages.sendToServer(new ChestplateC2SPacket());
+                }
             }
             if(KeyBinding.LEGGING_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getLeggingCooldown() <= 0){
-                player.sendSystemMessage(Component.literal("legging"));
                 int dashLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.DASH.get(), player);
                 int blinkLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BLINK.get(), player);
                 int rushLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.RUSH.get(), player);
@@ -109,7 +151,6 @@ public class ClientEvents {
 
             }
             if(KeyBinding.BOOT_ABILITY_KEY.consumeClick() && timerAccess.aabilities_getBootCooldown() <= 0){
-                player.sendSystemMessage(Component.literal("boot"));
                 int frostStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FROST_STOMP.get(), player);
                 int fireStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.FIRE_STOMP.get(), player);
                 int anvilStompLevel = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.ANVIL_STOMP.get(), player);

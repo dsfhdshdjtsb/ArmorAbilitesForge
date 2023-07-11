@@ -67,7 +67,7 @@ public class BootC2SPacket {
                 }
 
                 timerAccess.aabilities_setAnvilStompTimer(100);
-                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.COPPER_PLACE, SoundSource.PLAYERS, 1.0f, 1.0f);
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.COPPER_PLACE, SoundSource.PLAYERS, 0.7f, 1.0f);
                 //INSERT PACKETS TO OTHER PLAYERS HERE
             }
 //            timerAccess.aabilities_setBootCooldown(200);

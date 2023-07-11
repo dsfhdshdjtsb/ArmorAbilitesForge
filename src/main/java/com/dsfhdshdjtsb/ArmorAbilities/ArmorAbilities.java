@@ -1,5 +1,6 @@
 package com.dsfhdshdjtsb.ArmorAbilities;
 
+import com.dsfhdshdjtsb.ArmorAbilities.init.EffectsInit;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
 import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
 import com.mojang.logging.LogUtils;
@@ -29,7 +30,7 @@ public class ArmorAbilities
         MinecraftForge.EVENT_BUS.register(this);
 
         EnchantmentInit.ENCHANTMENTS.register(modEventBus);
-
+        EffectsInit.MOB_EFFECTS.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

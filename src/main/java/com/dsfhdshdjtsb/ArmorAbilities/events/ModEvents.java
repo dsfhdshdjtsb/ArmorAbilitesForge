@@ -107,7 +107,7 @@ public class ModEvents {
                         }
                     }
                 }
-                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_SMALL_FALL, SoundSource.PLAYERS, 1.0f, 1.0f);
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_SMALL_FALL, SoundSource.PLAYERS, 0.7f, 1.0f);
             }
             if(timerAccess.aabilities_getTicksFrostStompAnim() >= 0)
             {
@@ -155,7 +155,7 @@ public class ModEvents {
                         }
                     }
                 }
-                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_SMALL_FALL, SoundSource.PLAYERS, 1.0f, 1.0f);
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_SMALL_FALL, SoundSource.PLAYERS, 0.7f, 1.0f);
             }
             if(timerAccess.aabilities_getTicksFireStompAnim() >= 0)
             {
@@ -198,7 +198,7 @@ public class ModEvents {
                         }
                     }
                 }
-                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 1.0f, 1.0f);
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.7f, 1.0f);
                 timerAccess.aabilities_setAnvilStompAnimTimer(5);
             }
             else if(timerAccess.aabilities_getAnvilStompTimer() >= -5) {

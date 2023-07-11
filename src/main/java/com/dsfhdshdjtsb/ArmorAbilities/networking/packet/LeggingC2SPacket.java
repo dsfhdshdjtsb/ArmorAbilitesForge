@@ -69,7 +69,7 @@ public class LeggingC2SPacket {
                 double velZ = (Math.cos(yaw) * mult) * distanceMult;
 
                 player.serverLevel().sendParticles(ParticleTypes.POOF, player.getX(), player.getY(0.5), player.getZ(), 5,0.3, 0.5, 0.3, 0 );
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PHANTOM_FLAP, SoundSource.PLAYERS, 1.0f, 1.0f);
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PHANTOM_FLAP, SoundSource.PLAYERS, 0.7f, 1.0f);
                 player.setDeltaMovement(new Vec3(velX, velY, velZ));
             }
             else if (rushLevel > 0){
@@ -85,7 +85,7 @@ public class LeggingC2SPacket {
                 }
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, speedLevel));
                 player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, strengthLevel));
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ILLUSIONER_PREPARE_BLINDNESS, SoundSource.PLAYERS, 1.0f, 1.0f);
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ILLUSIONER_PREPARE_BLINDNESS, SoundSource.PLAYERS, 0.7f, 1.0f);
                 player.serverLevel().sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY(0.5), player.getZ(), 3,0.4, 0.5, 0.4, 0 );
 
             }
@@ -108,7 +108,7 @@ public class LeggingC2SPacket {
                     System.out.println("non solid");
                     System.out.println(player.getX() + " " + player.getY() + " " +  player.getZ());
                     player.serverLevel().sendParticles(ParticleTypes.DRAGON_BREATH, player.getX(), player.getY(0.5), player.getZ(), 15,0.3, 0.5, 0.3, 0 );
-                    level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.0f);
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.7f, 1.0f);
                     player.setPos(posX, posY, posZ);
                     player.setDeltaMovement(new Vec3(velX, velY, velZ));
                 }
