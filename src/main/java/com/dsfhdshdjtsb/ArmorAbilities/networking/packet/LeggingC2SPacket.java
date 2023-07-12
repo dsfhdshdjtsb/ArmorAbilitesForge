@@ -105,8 +105,6 @@ public class LeggingC2SPacket {
 
                 BlockState blockState = player.level().getBlockState(new BlockPos((int) posX, (int) posY, (int) posZ));
                 if (!blockState.isSolid()) {
-                    System.out.println("non solid");
-                    System.out.println(player.getX() + " " + player.getY() + " " +  player.getZ());
                     player.serverLevel().sendParticles(ParticleTypes.DRAGON_BREATH, player.getX(), player.getY(0.5), player.getZ(), 15,0.3, 0.5, 0.3, 0 );
                     level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.7f, 1.0f);
                     player.setPos(posX, posY, posZ);

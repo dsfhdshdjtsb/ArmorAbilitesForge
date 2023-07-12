@@ -3,6 +3,7 @@ package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EffectsInit;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
 import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -98,9 +100,7 @@ public class HelmetC2SPacket {
                     float str = player.distanceTo(e) / 7;
                     e.knockback(str, e.getX() - player.getX(), e.getZ() - player.getZ());
                     if(e instanceof Player)
-                    {
-                        //SEND PACKET TO UPDATE VEL HERE
-                    }
+                        ModMessages.INSTANCE.send(PacketDistributor.PLAYER.with(()-> (ServerPlayer) e), new VelocityS2CPacket(e.getDeltaMovement(), e.getId()));
                     player.serverLevel().sendParticles(ParticleTypes.POOF, e.getX(),
                             e.getY(1D), e.getZ(), 5, 0.3, 0.5, 0.3, 0.0D);
                     level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PHANTOM_FLAP, SoundSource.PLAYERS, 0.7f, 1.0f);

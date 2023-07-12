@@ -203,7 +203,7 @@ public class ModEvents {
                             ((LivingEntity) e).knockback(0.5 + 0.1 * anvilStompLevel, player.getX() - e.getX(), player.getZ() - e.getZ());
                             e.addDeltaMovement(new Vec3(0, (0.1 + 0.1 * anvilStompLevel) * (1- ((LivingEntity) e).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0));
                             if(e instanceof Player)
-                                ModMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new VelocityS2CPacket(e.getDeltaMovement(), e.getId()));
+                                ModMessages.INSTANCE.send(PacketDistributor.PLAYER.with(()-> (ServerPlayer) e), new VelocityS2CPacket(e.getDeltaMovement(), e.getId()));
                         }
                     }
                 }
