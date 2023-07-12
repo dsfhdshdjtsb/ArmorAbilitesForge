@@ -3,7 +3,11 @@ package com.dsfhdshdjtsb.ArmorAbilities.events;
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
 import com.dsfhdshdjtsb.ArmorAbilities.client.CooldownData;
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.TimerS2CPacket;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.VelocityS2CPacket;
 import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,6 +35,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.List;
 
@@ -39,8 +45,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        TimerAccess timerAccess = (TimerAccess) event.player;
-
+        TimerAccess timerAccess= (TimerAccess) event.player;
         if(event.phase == TickEvent.Phase.END)
         {
             if(event.side == LogicalSide.CLIENT ) {
@@ -67,10 +72,10 @@ public class ModEvents {
             timerAccess.aabilities_setLeggingCooldown(timerAccess.aabilities_getLeggingCooldown() - 1);
             timerAccess.aabilities_setBootCooldown(timerAccess.aabilities_getBootCooldown() - 1);
 
-
-        }
+                    }
         //could decrement cooldowns client side and init them with keybinds
         if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
+
             ServerPlayer player = (ServerPlayer) event.player;
 
             long fuse = timerAccess.aabilities_getFuse();
@@ -195,6 +200,8 @@ public class ModEvents {
                             //INSERT PLAYER VELOCITY UPDATE HERE
                             ((LivingEntity) e).knockback(0.5 + 0.1 * anvilStompLevel, player.getX() - e.getX(), player.getZ() - e.getZ());
                             e.addDeltaMovement(new Vec3(0, (0.1 + 0.1 * anvilStompLevel) * (1- ((LivingEntity) e).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0));
+                            if(e instanceof Player)
+                                ModMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new VelocityS2CPacket(e.getDeltaMovement(), e.getId()));
                         }
                     }
                 }

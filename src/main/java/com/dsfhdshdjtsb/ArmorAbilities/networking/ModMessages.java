@@ -1,10 +1,7 @@
 package com.dsfhdshdjtsb.ArmorAbilities.networking;
 
 import com.dsfhdshdjtsb.ArmorAbilities.ArmorAbilities;
-import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.BootC2SPacket;
-import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.ChestplateC2SPacket;
-import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.HelmetC2SPacket;
-import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.LeggingC2SPacket;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.packet.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -13,7 +10,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ModMessages {
-    private static SimpleChannel INSTANCE;
+    public static SimpleChannel INSTANCE;
     private static int packetid = 0;
     private static int id() {
         return packetid++;
@@ -48,6 +45,16 @@ public class ModMessages {
                 .decoder(LeggingC2SPacket::new)
                 .encoder(LeggingC2SPacket::toBytes)
                 .consumerMainThread(LeggingC2SPacket::handle)
+                .add();
+        net.messageBuilder(TimerS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(TimerS2CPacket::new)
+                .encoder(TimerS2CPacket::encode)
+                .consumerMainThread(TimerS2CPacket::handle)
+                .add();
+        net.messageBuilder(VelocityS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(VelocityS2CPacket::new)
+                .encoder(VelocityS2CPacket::encode)
+                .consumerMainThread(VelocityS2CPacket::handle)
                 .add();
     }
 

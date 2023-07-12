@@ -50,9 +50,9 @@ public class AabilitiesPlayerEntityMixin implements TimerAccess {
     @Inject(at = @At("HEAD"), method = "hurt", cancellable = true)
     private void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Player player = (Player) ((Object)this);
-        if(((TimerAccess) player).aabilities_getAnvilStompTimer() > -5)
+        if(((TimerAccess) player).aabilities_getAnvilStompTimer() >= -5)
         {
-            cir.cancel();
+            cir.setReturnValue(false);
         }
     }
 
