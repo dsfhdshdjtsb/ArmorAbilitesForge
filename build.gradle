@@ -150,7 +150,7 @@ dependencies {
 
 mixin {
     add sourceSets.main, 'mixins.aabilities.refmap.json'
-    config 'aabilities.mixins.json'
+    config 'mixins.aabilities.json'
     debug.verbose = true
     debug.export = true
 
