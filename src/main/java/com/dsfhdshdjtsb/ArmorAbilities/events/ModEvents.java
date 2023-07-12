@@ -52,6 +52,8 @@ public class ModEvents {
                 if (timerAccess.aabilities_getAnvilStompTimer() > 0 && event.player.onGround()) {
                     timerAccess.aabilities_setAnvilStompTimer(0);
                 }
+                if(timerAccess.aabilities_getAnvilStompTimer() == -5)
+                    timerAccess.aabilities_setShouldAnvilRender(false);
 //                if(timerAccess.aabilities_getAnvilStompTimer() >= -5 || timerAccess.aabilities_getFuse() >= 0) {
 //                    if (event.player.onGround()) {
 //                        event.player.makeStuckInBlock(event.player.getBlockStateOn(), new Vec3(0.001, 0.0000001, 0.001));
@@ -214,6 +216,9 @@ public class ModEvents {
                  if (player.isInWater()) {
                     timerAccess.aabilities_setAnvilStompAnimTimer(Math.max(timerAccess.aabilities_getAnvilStompTimer() - 2, -5));
                 }
+                 if(timerAccess.aabilities_getAnvilStompTimer() == -5)
+                     ModMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new TimerS2CPacket(false, timerAccess.aabilities_getFuse(), player.getId()));
+
             }
             if(timerAccess.aabilities_getAnvilStompAnimTimer() >= 0)
             {

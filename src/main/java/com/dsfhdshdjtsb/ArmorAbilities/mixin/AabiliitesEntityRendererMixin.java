@@ -55,7 +55,7 @@ public abstract class AabiliitesEntityRendererMixin<T extends LivingEntity, M ex
                 pMatrixStack.popPose();
                 ci.cancel();
             }
-            if(timerAccess.aabilities_getAnvilStompTimer() >= -5)
+            if(timerAccess.aabilities_getShouldAnvilRender())
             {
                 BlockState blockstate = Blocks.ANVIL.defaultBlockState();
                 if (blockstate.getRenderShape() == RenderShape.MODEL) {

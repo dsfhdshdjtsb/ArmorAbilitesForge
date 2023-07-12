@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SiphonEnchantment extends Enchantment {
     public SiphonEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_CHEST, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_CHEST, new EquipmentSlot[]{EquipmentSlot.CHEST});
     }
     @Override
     public int getMaxLevel() {

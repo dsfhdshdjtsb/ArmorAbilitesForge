@@ -16,7 +16,7 @@ public class AabiliitesCameraMixin {
     private void isDetachedInject(CallbackInfoReturnable<Boolean> cir)
     {
         TimerAccess timerAccess = (TimerAccess) Minecraft.getInstance().player;
-        if(timerAccess.aabilities_getFuse() >= 0 || timerAccess.aabilities_getAnvilStompTimer() >= -5)
+        if(timerAccess.aabilities_getFuse() >= 0 || timerAccess.aabilities_getShouldAnvilRender())
         {
             cir.setReturnValue(true);
         }

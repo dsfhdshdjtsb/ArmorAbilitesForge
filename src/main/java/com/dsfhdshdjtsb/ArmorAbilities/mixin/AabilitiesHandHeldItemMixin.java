@@ -22,7 +22,7 @@ public class AabilitiesHandHeldItemMixin {
     private void render(LivingEntity p_270072_, ItemStack p_270793_, ItemDisplayContext p_270837_, boolean p_270203_, PoseStack p_270974_, MultiBufferSource p_270686_, int p_270103_, CallbackInfo ci)
     {
         TimerAccess timerAccess = (TimerAccess) Minecraft.getInstance().player;
-        if(timerAccess.aabilities_getFuse() > 0 || timerAccess.aabilities_getAnvilStompTimer() >= -5)
+        if(timerAccess.aabilities_getFuse() > 0 || timerAccess.aabilities_getShouldAnvilRender())
         {
             ci.cancel();
         }

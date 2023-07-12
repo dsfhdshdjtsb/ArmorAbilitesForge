@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CleanseEnchantment extends Enchantment {
     public CleanseEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_CHEST, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_CHEST, new EquipmentSlot[]{EquipmentSlot.CHEST});
     }
     @Override
     public int getMaxLevel() {

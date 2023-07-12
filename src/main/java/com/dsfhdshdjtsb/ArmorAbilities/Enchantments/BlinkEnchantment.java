@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlinkEnchantment extends Enchantment {
     public BlinkEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_LEGS, new EquipmentSlot[]{EquipmentSlot.LEGS});
     }
     @Override
     public int getMaxLevel() {

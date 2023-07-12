@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MindControlEnchantment extends Enchantment {
     public MindControlEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD, new EquipmentSlot[]{EquipmentSlot.HEAD});
     }
     @Override
     public int getMaxLevel() {

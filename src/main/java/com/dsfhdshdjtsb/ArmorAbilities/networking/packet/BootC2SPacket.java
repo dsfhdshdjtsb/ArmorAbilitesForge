@@ -76,13 +76,7 @@ public class BootC2SPacket {
                 timerAccess.aabilities_setAnvilStompTimer(100);
                 player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.COPPER_PLACE, SoundSource.PLAYERS, 0.7f, 1.0f);
                 //INSERT PACKETS TO OTHER PLAYERS HERE
-                player.sendSystemMessage(Component.literal(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player).toString()));
-                List<LivingEntity> list = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(10,2,10 ) );
-                list.remove(player);
-                ModMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new TimerS2CPacket(timerAccess.aabilities_getAnvilStompTimer(), timerAccess.aabilities_getFuse(), player.getId()));
-
-
-
+                ModMessages.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new TimerS2CPacket(true, timerAccess.aabilities_getFuse(), player.getId()));
             }
 //            timerAccess.aabilities_setBootCooldown(200);
         });

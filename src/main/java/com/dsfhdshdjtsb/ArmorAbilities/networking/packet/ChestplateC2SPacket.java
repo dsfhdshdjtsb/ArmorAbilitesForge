@@ -1,6 +1,7 @@
 package com.dsfhdshdjtsb.ArmorAbilities.networking.packet;
 
 import com.dsfhdshdjtsb.ArmorAbilities.init.EnchantmentInit;
+import com.dsfhdshdjtsb.ArmorAbilities.networking.ModMessages;
 import com.dsfhdshdjtsb.ArmorAbilities.util.TimerAccess;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -52,6 +54,8 @@ public class ChestplateC2SPacket {
                 timerAccess.aabiliites_setFuse(80);
                 player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TNT_PRIMED, SoundSource.PLAYERS, 0.7f, 1.0f);
                 //DO SERVER RENDERING HERE
+                ModMessages.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new TimerS2CPacket(timerAccess.aabilities_getShouldAnvilRender(), timerAccess.aabilities_getFuse(), player.getId()));
+
             }
             else if(cleanseLevel > 0)
             {

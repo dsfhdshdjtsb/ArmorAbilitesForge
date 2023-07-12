@@ -110,7 +110,7 @@ public class LeggingC2SPacket {
                     player.serverLevel().sendParticles(ParticleTypes.DRAGON_BREATH, player.getX(), player.getY(0.5), player.getZ(), 15,0.3, 0.5, 0.3, 0 );
                     level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.7f, 1.0f);
                     player.setPos(posX, posY, posZ);
-                    player.setDeltaMovement(new Vec3(velX, velY, velZ));
+                    player.addDeltaMovement(new Vec3(velX, velY, velZ));
                 }
             }
 //            timerAccess.aabilities_setLeggingCooldown(200);

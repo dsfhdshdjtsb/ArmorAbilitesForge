@@ -19,7 +19,7 @@ public class AabilitiesPlayerRendererMixin {
     private void renderHandMixin(PoseStack pMatrixStack, MultiBufferSource pBuffer, int pCombinedLight, AbstractClientPlayer pPlayer, ModelPart pRendererArm, ModelPart pRendererArmwear, CallbackInfo ci)
     {
         TimerAccess timerAccess = (TimerAccess) Minecraft.getInstance().player;
-        if(timerAccess.aabilities_getFuse() > 0 || timerAccess.aabilities_getAnvilStompTimer() >= -5)
+        if(timerAccess.aabilities_getFuse() > 0 || timerAccess.aabilities_getShouldAnvilRender())
         {
             ci.cancel();
         }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AnvilStompEnchantment extends Enchantment {
     public AnvilStompEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
     }
     @Override
     public int getMaxLevel() {

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FocusEnchantment extends Enchantment {
     public FocusEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD, new EquipmentSlot[]{EquipmentSlot.HEAD});
     }
     @Override
     public int getMaxLevel() {

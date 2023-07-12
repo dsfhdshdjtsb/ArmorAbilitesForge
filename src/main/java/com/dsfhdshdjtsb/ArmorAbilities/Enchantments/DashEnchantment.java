@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DashEnchantment extends Enchantment {
     public DashEnchantment() {
-        super(Rarity.COMMON, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.values());
+        super(Rarity.COMMON, EnchantmentCategory.ARMOR_LEGS, new EquipmentSlot[]{EquipmentSlot.LEGS});
     }
     @Override
     public int getMaxLevel() {
